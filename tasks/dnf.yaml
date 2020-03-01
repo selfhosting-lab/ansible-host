@@ -1,0 +1,57 @@
+---
+
+- name: 'dnf : Set number of DNF download workers'
+  ini_file:
+    path: "{{ dnf_conf }}"
+    section: main
+    option: max_parallel_downloads
+    value: '10'
+
+- name: 'dnf : Use fastest mirror'
+  ini_file:
+    path: "{{ dnf_conf }}"
+    section: main
+    option: fastestmirror
+    value: 'yes'
+
+- name: 'dnf : Ensure DNF plugins are installed'
+  dnf:
+    state: present
+    name:
+    - dnf-automatic
+    - dnf-utils
+    - python3-dnf-plugin-leaves
+    - python3-dnf-plugin-show-leaves
+    - python3-dnf-plugin-system-upgrade
+    - python3-dnf-plugin-versionlock
+
+- name: 'dnf : Ensure automatic security updates are configured'
+  copy:
+    src: dnf-automatic.conf
+    dest: "{{ dnf_automatic_conf}}"
+    owner: root
+    group: root
+    mode: 0644
+    seuser: system_u
+    serole: object_r
+    setype: etc_t
+
+- name: 'dnf : Ensure automatic security updates are enabled'
+  systemd:
+    name: dnf-automatic.timer
+    enabled: true
+    state: started
+
+- name: 'dnf : Ensure automatic refresh of DNF cache is enabled'
+  systemd:
+    name: dnf-makecache.timer
+    enabled: true
+    state: started
+
+- name: 'dnf : Ensure DNF uses only HTTPS mirrors'
+  replace:
+    path: "{{ item }}"
+    regexp: '^metalink=(((?!&protocol=https)\S)+)$'
+    replace: 'metalink=\1&protocol=https'
+  with_fileglob:
+  - '/etc/yum.repos.d/*'

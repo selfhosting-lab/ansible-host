@@ -1,0 +1,19 @@
+---
+
+- name: 'dns : Ensure NetworkManager is not managing DNS resolution'
+  ini_file:
+    path: "{{ network_manager_conf }}"
+    section: main
+    option: dns
+    value: none
+
+- name: 'dns : Ensure DNS resolution is configured'
+  template:
+    src: resolv.j2
+    dest: "{{ resolv_conf }}"
+    owner: root
+    group: root
+    mode: 0644
+    seuser: system_u
+    serole: object_r
+    setype: net_conf_t

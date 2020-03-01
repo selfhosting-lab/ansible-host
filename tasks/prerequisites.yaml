@@ -1,0 +1,8 @@
+---
+
+- name: 'prerequisites : Ensure prerequisite packages are installed'
+  dnf:
+    state: present
+    name:
+    - kernel
+    - python3-libselinux

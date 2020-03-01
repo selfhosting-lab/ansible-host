@@ -1,0 +1,14 @@
+---
+
+name: host
+title: Tests for 'host' Ansible role
+maintainer: Ben Fairless
+copyright: Ben Fairless
+copyright_email: ben.fairless@gmail.com
+license: MIT
+summary: Validates system configuration
+description: Verifies the configuration defined in role/system
+version: 1.0.0
+
+supports:
+- platform-family: fedora

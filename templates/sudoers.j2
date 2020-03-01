@@ -1,0 +1,9 @@
+{{ ansible_managed | comment }}
+
+{% if admin_passwordless_sudo %}
+# Allow passwordless sudo for '{{ admin_group_name }}' group
+%{{ admin_group_name }} ALL=(ALL) NOPASSWD: ALL
+{% else %}
+# Allow sudo access for '{{ admin_group_name }}' group
+%{{ admin_group_name }} ALL=(ALL)
+{% endif %}

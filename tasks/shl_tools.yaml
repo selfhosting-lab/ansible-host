@@ -1,0 +1,34 @@
+---
+
+- name: 'shl-tools : Ensure SHL script library is installed'
+  copy:
+    src: shl-lib.sh
+    dest: /usr/local/lib/shl.sh
+    owner: root
+    group: root
+    mode: 0644
+    seuser: system_u
+    serole: object_r
+    setype: lib_t
+
+- name: 'shl-tools : Ensure shl-reboot is installed'
+  copy:
+    src: shl-reboot.sh
+    dest: "{{ sbin_dir }}/shl-reboot"
+    owner: root
+    group: root
+    mode: 0755
+    seuser: system_u
+    serole: object_r
+    setype: bin_t
+
+- name: 'shl-tools : Ensure shl-reload is installed'
+  copy:
+    src: shl-reload.sh
+    dest: "{{ sbin_dir }}/shl-reload"
+    owner: root
+    group: root
+    mode: 0755
+    seuser: system_u
+    serole: object_r
+    setype: bin_t

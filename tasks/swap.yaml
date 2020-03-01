@@ -1,0 +1,41 @@
+---
+
+- name: 'swap : Ensure swapfile exists'
+  command: "dd if=/dev/zero of={{ swapfile_path }} bs=1M count={{ swapfile_size }}"
+  args:
+    creates: "{{ swapfile_path }}"
+
+- name: 'swap : Ensure swapfile has appropriate permissions'
+  file:
+    path: "{{ swapfile_path }}"
+    owner: root
+    group: root
+    mode: 0600
+    seuser: system_u
+    serole: object_r
+    setype: swapfile_t
+    state: file
+
+- name: 'swap : Check swapfile'
+  command: "file {{ swapfile_path }}"
+  register: swapfile_info
+  changed_when: false
+
+- name: 'swap : Ensure swapfile is formatted correctly'
+  command: "mkswap {{ swapfile_path }}"
+  when: '"swap file" not in swapfile_info.stdout'
+
+- name: 'swap : Ensure swapfile is in fstab'
+  lineinfile:
+    path: /etc/fstab
+    regexp: "^{{ swapfile_path }}"
+    line: "{{ swapfile_path }} none swap sw 0 0"
+
+- name: 'swap : Check system swap'
+  command: swapon -s
+  register: swapfile_sys
+  changed_when: false
+
+- name: 'swap : Ensure swapfile is enabled'
+  command: swapon {{ swapfile_path }}
+  when: 'swapfile_path not in swapfile_sys.stdout'

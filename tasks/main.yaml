@@ -1,0 +1,33 @@
+---
+
+- name: prerequisites
+  include: prerequisites.yaml
+
+- name: dnf
+  include: dnf.yaml
+
+- name: admin users
+  include: admins.yaml
+
+- name: dns
+  include: dns.yaml
+  when: enable_custom_dns
+
+- name: swap file
+  include: swap.yaml
+  when: enable_swap
+
+- name: time
+  include: time.yaml
+
+- name: tuning
+  include: tuning.yaml
+
+- name: utils
+  include: utils.yaml
+
+- name: shl-tools
+  include: shl_tools.yaml
+
+- name: handlers
+  meta: flush_handlers

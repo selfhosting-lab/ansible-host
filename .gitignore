@@ -1,0 +1,8 @@
+# Temporary files
+.kitchen/
+.vagrant/
+.ansible/
+.tmp/
+
+# Test results
+results/

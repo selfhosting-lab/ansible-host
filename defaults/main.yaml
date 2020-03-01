@@ -1,0 +1,30 @@
+---
+
+# Administrative users to create
+admins: []
+# admins:
+#   - name: <NAME>
+#     key: 'ssh-rsa <SSH PUBLIC KEY>'
+
+# Determine if passwordless sudo should be used by admin users
+admin_passwordless_sudo: True
+
+# NTP settings
+ntp_pool: pool.ntp.org
+# timezone: Etc/UTC
+
+# DNS settings
+enable_custom_dns: True
+nameservers:
+- 1.1.1.1
+- 8.8.8.8
+- 8.8.4.4
+search_domains:
+  - "{{ ansible_domain }}"
+
+# Swap settings
+enable_swap: True
+swapfile_size: "{{ ansible_memory_mb.real.total }}"
+
+# Tuning setting
+tuned_profile: atomic-guest

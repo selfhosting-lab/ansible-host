@@ -1,0 +1,33 @@
+---
+
+- name: 'time : Ensure a timezone is set'
+  file:
+    path: /etc/localtime
+    state: link
+    src: "/usr/share/zoneinfo/{{ timezone }}"
+  when: timezone is defined
+
+- name: 'time : Ensure chronyd package is installed'
+  dnf:
+    state: present
+    name: chrony
+
+- name: 'time : Ensure chronyd uses socket instead of IP'
+  lineinfile:
+    path: "{{ chrony_conf }}"
+    regexp: "^cmdport"
+    line: 'cmdport 0'
+  notify: restart chronyd
+
+- name: 'time: Ensure a time pool is set'
+  lineinfile:
+    path: "{{ chrony_conf }}"
+    regexp: '^pool'
+    line: "pool {{ ntp_pool }} iburst"
+  notify: restart chronyd
+
+- name: 'time : Ensure time synchronisation is running'
+  systemd:
+    name: chronyd
+    enabled: true
+    state: started

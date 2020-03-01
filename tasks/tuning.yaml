@@ -1,0 +1,29 @@
+---
+
+- name: 'tuning : Ensure the system will restart if the kernel panics'
+  sysctl:
+    name: kernel.panic
+    value: '10'
+    state: present
+
+- name: 'tuning : Ensure the tuned packages are installed'
+  dnf:
+    state: present
+    name:
+    - tuned-utils
+    - tuned-profiles-atomic
+
+- name: 'tuning : Ensure tuned daemon is running'
+  systemd:
+    name: tuned
+    enabled: true
+    state: started
+
+- name: 'tuning : Check tuned profile'
+  command: tuned-adm active
+  register: current_tuned_profile
+  changed_when: false
+
+- name: 'tuning : Ensure correct tuned profile is active'
+  command: "tuned-adm profile {{ tuned_profile }}"
+  when: tuned_profile not in current_tuned_profile.stdout

@@ -1,0 +1,55 @@
+---
+
+provisioner:
+  name: ansible_playbook
+  # roles_path: 
+  hosts: all
+  ansible_verbose: false
+  ansible_version: latest
+  require_chef_for_busser: false
+
+
+verifier:
+  name: inspec
+  profiles_path: test/integration
+  reporter:
+  - cli
+  - junit:results/%{platform}_%{suite}_inspec.xml
+  - html:results/%{platform}_%{suite}_inspec.html
+
+platforms:
+<% require 'mkmf' %>
+<% if find_executable 'vagrant' %>
+  # Local development platform, using Vagrant (default)
+- name: vagrant
+  driver:
+    name: vagrant
+    box: fedora/30-cloud-base
+    customize:
+      memory: 2048
+    network:
+    - ['private_network', {ip: '192.168.33.10'}]
+<% end %>
+
+<% if ENV['DIGITALOCEAN_ACCESS_TOKEN'] %>
+  # Cloud integration platform, using Digital Ocean, if available
+- name: digitalocean
+  driver:
+    name: digitalocean
+    server_name: <%= ENV['BUILD_NAME'] || "dev.selfhosting-lab.com-" + Time.now.strftime("%Y%m%d-%H%M%S") %>
+    image: fedora-30-x64
+    region: <%= ENV['DIGITALOCEAN_REGION'] || 'lon1' %>
+    size: s-1vcpu-2gb
+    tags:
+    - ci
+    - test
+<% end %>
+
+suites:
+- name: default
+  provisioner:
+    playbook: test/standalone.yaml
+
+transport:
+  ssh:
+    max_ssh_sessions: 3

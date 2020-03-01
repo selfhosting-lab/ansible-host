@@ -1,0 +1,36 @@
+---
+
+- name: 'admin : Ensure admin group exists'
+  group:
+    name: "{{ admin_group_name }}"
+    state: present
+
+- name: 'admin : Ensure admin group is in sudoers'
+  template:
+    src: sudoers.j2
+    dest: "{{ sudoers_dir }}/{{ admin_group_name }}"
+    owner: root
+    group: root
+    mode: 0440
+    seuser: system_u
+    serole: object_r
+    setype: etc_t
+
+# NO TESTS
+- name: 'admin : Ensure admin users exist'
+  user:
+    name: "{{ item.name }}"
+    state: present
+    groups:
+    - "{{ admin_group_name }}"
+    - systemd-journal
+    append: yes
+  with_items: "{{ admins }}"
+
+# NO TESTS
+- name: 'admin : Ensure SSH keys are trusted for admin users'
+  authorized_key:
+    state: present
+    user: "{{ item.name }}"
+    key: "{{ item.key }}"
+  with_items: "{{ admins }}"
