@@ -14,8 +14,7 @@ verifier:
   profiles_path: test/integration
   reporter:
   - cli
-  - junit:results/%{platform}_%{suite}_inspec.xml
-  - html:results/%{platform}_%{suite}_inspec.html
+  - junit:test/results/%{platform}_%{suite}_inspec.xml
 
 platforms:
 <% require 'mkmf' %>
@@ -53,3 +52,5 @@ suites:
 transport:
   ssh:
     max_ssh_sessions: 3
+    connection_timeout: 10
+    connection_retries: 5

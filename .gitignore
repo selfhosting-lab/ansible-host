@@ -3,6 +3,8 @@
 .vagrant/
 .ansible/
 .tmp/
+.bundle/
+mkmf.log
 
 # Test results
-results/
+test/results/
