@@ -48,10 +48,14 @@
     enabled: true
     state: started
 
+- name: 'dnf : List repostiory files'
+  shell: find /etc/yum.repos.d -type f -name \*.repo
+  register: yum_repos
+  changed_when: false
+
 - name: 'dnf : Ensure DNF uses only HTTPS mirrors'
   replace:
     path: "{{ item }}"
     regexp: '^metalink=(((?!&protocol=https)\S)+)$'
     replace: 'metalink=\1&protocol=https'
-  with_fileglob:
-  - '/etc/yum.repos.d/*'
+  with_items: "{{ yum_repos.stdout_lines }}"

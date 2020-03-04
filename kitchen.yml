@@ -1,12 +1,14 @@
 ---
 
 provisioner:
-  name: ansible_playbook
-  # roles_path: 
-  hosts: all
-  ansible_verbose: false
-  ansible_version: latest
-  require_chef_for_busser: false
+  name: ansible_push
+  roles_path: test/roles/
+  chef_bootstrap_url: nil
+  host_key_checking: false
+  display_skipped_hosts: false
+  ansible_config: test/ansible.cfg
+  idempotency_test: <% ENV['IDEMPOTENCY_TEST'] || 'false' %>
+  fail_non_idempotent: false
 
 
 verifier:
@@ -16,9 +18,9 @@ verifier:
   - cli
   - junit:test/results/%{platform}_%{suite}_inspec.xml
 
+
 platforms:
-<% require 'mkmf' %>
-<% if find_executable 'vagrant' %>
+<% unless `which vagrant`.empty? %>
   # Local development platform, using Vagrant (default)
 - name: vagrant
   driver:
@@ -35,7 +37,7 @@ platforms:
 - name: digitalocean
   driver:
     name: digitalocean
-    server_name: <%= ENV['BUILD_NAME'] || "dev.selfhosting-lab.com-" + Time.now.strftime("%Y%m%d-%H%M%S") %>
+    server_name: <%= ENV['BUILD_NAME'] || "ansible-host-" + Time.now.strftime("%Y%m%d-%H%M%S") %>
     image: fedora-30-x64
     region: <%= ENV['DIGITALOCEAN_REGION'] || 'lon1' %>
     size: s-1vcpu-2gb
@@ -44,13 +46,15 @@ platforms:
     - test
 <% end %>
 
+
 suites:
 - name: default
   provisioner:
-    playbook: test/standalone.yaml
+    playbook: test/integration/default/playbook.yml
+
 
 transport:
   ssh:
-    max_ssh_sessions: 3
+    max_ssh_sessions: 5
     connection_timeout: 10
     connection_retries: 5

@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
 group :kitchen do
-  gem 'kitchen-ansible'
+  gem 'kitchen-ansiblepush'
   gem 'kitchen-digitalocean'
   gem 'kitchen-inspec'
   gem 'kitchen-vagrant'

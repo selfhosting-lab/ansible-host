@@ -21,7 +21,9 @@ Provide a well-configured Fedora system, suitable for production usage.
 
 ---
 
-## Admins
+## Configuration
+
+### Admins
 
 A user group `admin` is created which is granted sudo access via `/etc/sudoers.d/admin`.
 
@@ -36,14 +38,14 @@ admins:
 > By default, the users are granted passwordless sudo access. You can change this by setting
 > `admin_passwordless_sudo: false`.
 
-## Security updates
+### Security updates
 
 Automatic security updates are provided by [dnf-automatic](https://dnf.readthedocs.io/en/latest/automatic.html). You can
 review the status of the updates by running `systemctl status dnf-automatic.timer`.
 
 The job will first run 1 hour after booting, and then every 24 hours after that.
 
-## DNS configuration
+### DNS configuration
 
 By default, DNS is configured automatically by Network Manager based on DHCP
 settings.
@@ -70,7 +72,7 @@ search_domains:
 
 To enable this feature simply set `enable_custom_dns: True`.
 
-## Swapfile
+### Swapfile
 
 A swapfile is created at `/var/cache/swap` to provide additional swap resource. Although hosts should be configured
 appropriately for their workload, it can be good to have a temporary resource that memory can be swapped to.
@@ -83,7 +85,7 @@ Using swap is enabled by default but can be turned off by setting `enable_swap: 
 You can also adjust the swappiness of the system by setting `swappiness` to a value between 0 and 100. The default
 swappiness is `10` which provides good performance, only using swap when necessary.
 
-## NTP configuration
+### NTP configuration
 
 NTP is provided using the [chronyd](https://chrony.tuxfamily.org/) daemon and should be something you should never have
 to manage. By default it synchronises time from the public `pool.ntp.org` pool, which should automatically find the best
@@ -94,14 +96,14 @@ You can also optionally set your prefered timezone using the appropriate
 `timezone: Europe/London` or similar. You may not want to do this if you'd prefer your host to use it's local timezone
 that was configured at installation time.
 
-## Tuning
+### Tuning
 
 A few opinionated system tweaks are applied to optimise performance. These are applied using the [[Tuned](Tuned project
 https://tuned-project.org) profile `atomic-guest`.
 
 If, for your specific hardware configuration, you'd like to use an alternative profile you can set `tuned_profile`.
 
-## Additional utilities
+### Additional utilities
 
 A few additional utilities are installed for your convience, primarily for troubleshooting and system visibility.
 
@@ -131,11 +133,11 @@ List of tools installed:
 - [Vim](http://vim.org/) - Powerful text editor.
 - [Wget](http://www.gnu.org/software/wget/) - Tool for retreiving files using HTTP or FTP.
 
-## Custom tools
+### Custom tools
 
 For quality of life, a few custom tools have been added which are installed by default.
 
-### shl-reboot
+#### shl-reboot
 
 `shl-reboot` allows you to quickly reboot a system when a new kernel is available, minimising the amount of downtime on
 the system. It works using `kexec` to swap the kernel out while the system is still running, meaning POST and BIOS
@@ -147,7 +149,7 @@ currently active the tool will inform you.
 
 You can then reboot the system by running `shl-reboot apply`. After sleeping for 3 seconds, the system will reboot.
 
-### shl-reload
+#### shl-reload
 
 `shl-reload` allows you to restart currently running services which have updates available, minimising the frequency of
 reboots required to pick up software updates. It looks at which SystemD units are associated with updated software, and

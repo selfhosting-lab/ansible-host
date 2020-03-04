@@ -1,5 +1,18 @@
 ---
 
+admin_group_name: admin
+
+# Paths
+chrony_conf: /etc/chrony.conf
+dnf_dir: /etc/dnf/
+dnf_conf: "{{ dnf_dir }}/dnf.conf"
+dnf_automatic_conf: "{{ dnf_dir }}/automatic.conf"
+network_manager_conf: /etc/NetworkManager/NetworkManager.conf
+resolv_conf: /etc/resolv.conf
+swapfile_path: /var/cache/swap
+sudoers_dir: /etc/sudoers.d
+sbin_dir: /usr/local/sbin
+
 # Administrative users to create
 admins: []
 # admins:

@@ -2,9 +2,8 @@
 .kitchen/
 .vagrant/
 .ansible/
-.tmp/
 .bundle/
-mkmf.log
 
 # Test results
 test/results/
+test/roles/
