@@ -113,7 +113,6 @@ List of tools installed:
 - [Bind Utils](https://apps.fedoraproject.org/packages/bind-utils/overview/) - Collection of utilities for querying DNS.
 - [cURL](https://curl.haxx.se/) - Command-line tool for transferring data with URLs.
 - [Git](https://git-scm.com/) - *The* distributed revision control system.
-- [Glances](https://github.com/nicolargo/glances) - CLI monitoring tool which also supports running as a webpage.
 - [htop](http://hisham.hm/htop/) - Better version of `top`.
 - [htpasswd](https://httpd.apache.org/docs/2.4/programs/htpasswd.html) - Tool to create and update usernames and password for basic authentication.
 - [iotop](http://guichaz.free.fr/iotop/) - `top`-like utility for disk I/O.

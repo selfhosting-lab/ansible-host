@@ -21,7 +21,6 @@ control 'dns-02' do
     its('group') { should eq 'root' }
     its('mode') { should cmp '0644' }
     its('selinux_label') { should eq 'system_u:object_r:net_conf_t:s0' }
-    its('content') { should match(/^search( \S)+/) }
     its('content') { should match(/^nameserver +\S+/) }
   end
 end

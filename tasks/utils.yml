@@ -8,7 +8,6 @@
     - bind-utils
     - curl
     - git
-    - glances
     - htop
     - httpd-tools
     - iotop
