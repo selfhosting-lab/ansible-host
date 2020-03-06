@@ -1,0 +1,57 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+workspace:
+  path: /builds/ansible-host
+
+clone:
+  depth: 1
+ 
+steps:
+- name: dependencies
+  image: benfairless/ci-builder:master
+  environment:
+    SSH_KEY:
+      from_secret: SSH_KEY
+  commands:
+  - mkdir -p .ssh
+  - echo $${SSH_KEY} | tr \'","\' '\n' > .ssh/id_rsa
+  - cat .ssh/id_rsa
+  - chmod 600 .ssh/id_rsa
+  - bundle install
+  - test/dependencies.sh
+
+- name: integration - create
+  image: benfairless/ci-builder:master
+  environment: &common
+    DIGITALOCEAN_ACCESS_TOKEN:
+      from_secret: DIGITALOCEAN_ACCESS_TOKEN
+    DIGITALOCEAN_SSH_KEY_IDS:
+      from_secret: DIGITALOCEAN_SSH_KEY_IDS
+  commands:
+  - eval $(ssh-agent)
+  - ssh-add .ssh/id_rsa
+  - bundle exec kitchen create digitalocean
+  - bundle exec kitchen converge digitalocean
+
+- name: integration - validate
+  image: benfairless/ci-builder:master
+  environment: *common
+  commands:
+  - eval $(ssh-agent)
+  - ssh-add .ssh/id_rsa
+  - bundle exec kitchen verify digitalocean
+
+- name: integration - destroy
+  image: benfairless/ci-builder:master
+  environment: *common
+  commands:
+  - eval $(ssh-agent)
+  - ssh-add .ssh/id_rsa
+  - bundle exec kitchen destroy digitalocean
+  when:
+    status:
+    - failure
+    - success
