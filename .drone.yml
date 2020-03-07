@@ -1,7 +1,7 @@
 ---
 kind: pipeline
 type: docker
-name: default
+name: integration
 
 workspace:
   path: /builds/ansible-host
@@ -18,12 +18,11 @@ steps:
   commands:
   - mkdir -p .ssh
   - echo $${SSH_KEY} | tr \'","\' '\n' > .ssh/id_rsa
-  - cat .ssh/id_rsa
   - chmod 600 .ssh/id_rsa
   - bundle install
   - test/dependencies.sh
 
-- name: integration - create
+- name: create
   image: benfairless/ci-builder:master
   environment: &common
     DIGITALOCEAN_ACCESS_TOKEN:
@@ -36,7 +35,7 @@ steps:
   - bundle exec kitchen create digitalocean
   - bundle exec kitchen converge digitalocean
 
-- name: integration - validate
+- name: validate
   image: benfairless/ci-builder:master
   environment: *common
   commands:
@@ -44,7 +43,7 @@ steps:
   - ssh-add .ssh/id_rsa
   - bundle exec kitchen verify digitalocean
 
-- name: integration - destroy
+- name: destroy
   image: benfairless/ci-builder:master
   environment: *common
   commands:
