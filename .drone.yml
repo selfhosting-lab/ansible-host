@@ -11,7 +11,7 @@ clone:
  
 steps:
 - name: dependencies
-  image: benfairless/ci-builder:master
+  image: selfhostinglab/ci-builder:latest
   environment:
     SSH_KEY:
       from_secret: SSH_KEY
@@ -23,7 +23,7 @@ steps:
   - test/dependencies.sh
 
 - name: create
-  image: benfairless/ci-builder:master
+  image: selfhostinglab/ci-builder:latest
   environment: &common
     DIGITALOCEAN_ACCESS_TOKEN:
       from_secret: DIGITALOCEAN_ACCESS_TOKEN
@@ -36,7 +36,7 @@ steps:
   - bundle exec kitchen converge digitalocean
 
 - name: validate
-  image: benfairless/ci-builder:master
+  image: selfhostinglab/ci-builder:latest
   environment: *common
   commands:
   - eval $(ssh-agent)
@@ -44,7 +44,7 @@ steps:
   - bundle exec kitchen verify digitalocean
 
 - name: destroy
-  image: benfairless/ci-builder:master
+  image: selfhostinglab/ci-builder:latest
   environment: *common
   commands:
   - eval $(ssh-agent)
