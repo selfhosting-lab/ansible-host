@@ -1,12 +1,35 @@
 # ansible-host
 
+![Drone build status](https://img.shields.io/drone/build/selfhosting-lab/ansible-host/master?label=BUILD&logo=drone&style=for-the-badge)
+
 ## Description
 
-Provide a well-configured Fedora system, suitable for production usage.
+Provide a well-configured Fedora system, suitable for production usage, via Ansible.
+
+This is used as a base image for selfhosting-labs.
 
 ## Dependencies
 
-- [Fedora 30](https://getfedora.org/) x86_64 host
+- [Fedora 30](https://getfedora.org/) x86_64 target machine.
+- [Ansible](https://ansible.com).
+- [Ruby](https://ruby-lang.org) >= `2.6` if you wish to run the test suite.
+- [Bundler](https://bundler.io)
+
+---
+
+## Quick start
+
+If you want to spin a quick environment up in Vagrant, it is enough to run the
+following:
+
+```shell
+bundle install
+bundle exec kitchen converge vagrant
+bundle exec kitchen verify vagrant
+bundle exec kitchen login vagrant
+```
+
+---
 
 ## Features
 
@@ -161,3 +184,19 @@ Restarting services can be disruptive, for example restarting active user sessio
 users, but the impact is minimised to only those services which need updating. It should be treated as a situational
 alternative to reboots as it cannot guarantee that there will be no impact to services which you rely on, and therefore
 cannot provide a zero-downtime update process.
+
+---
+
+## Privacy
+
+The use of this repository will modify your target machine to perform certain outbound connections which may be of concern
+to more privacy-focused users. In the interest of transparency we'd like to make users fully aware of all endpoints we
+have added, as you may wish to consider changing these in your own implementation.
+
+All necessary packages are installed using the predefined repositories on the target system, which are assumed to be the
+official Fedora repositories unless you modify your repolist to use private repositories.
+
+By default NTP and DNS use publicly available endpoints, which you can read more about above in the
+[NTP Configuration](#ntp-configuration) and [DNS Configuration](#dns-configuration) documentation respectively.
+
+During testing, `github.com` is looked up via DNS in order to test the DNS configuration.
