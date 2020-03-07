@@ -4,7 +4,7 @@ type: docker
 name: integration
 
 workspace:
-  path: /builds/ansible-host
+  path: /builds/host
 
 clone:
   depth: 1

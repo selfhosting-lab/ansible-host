@@ -3,7 +3,9 @@
 .vagrant/
 .ansible/
 .bundle/
+Gemfile.lock
 
 # Test results
 test/results/
+# Dependencies
 test/roles/

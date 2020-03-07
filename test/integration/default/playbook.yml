@@ -9,4 +9,4 @@
       name: '*'
       state: latest
   roles:
-  - ansible-host
+  - host
