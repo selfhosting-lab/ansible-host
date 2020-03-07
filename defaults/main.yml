@@ -1,7 +1,5 @@
 ---
 
-admin_group_name: admin
-
 # Paths
 chrony_conf: /etc/chrony.conf
 dnf_dir: /etc/dnf/
@@ -14,6 +12,7 @@ sudoers_dir: /etc/sudoers.d
 sbin_dir: /usr/local/sbin
 
 # Administrative users to create
+admin_group_name: admin
 admins: []
 # admins:
 #   - name: <NAME>
@@ -33,7 +32,7 @@ nameservers:
 - 8.8.8.8
 - 8.8.4.4
 search_domains:
-  - "{{ ansible_domain }}"
+- "{{ ansible_domain }}"
 
 # Swap settings
 enable_swap: True

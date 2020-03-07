@@ -8,6 +8,5 @@
     dnf:
       name: '*'
       state: latest
-      security: false
   roles:
   - ansible-host
