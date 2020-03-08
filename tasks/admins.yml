@@ -24,7 +24,7 @@
     groups:
     - "{{ admin_group_name }}"
     - systemd-journal
-    append: yes
+    append: true
   with_items: "{{ admins }}"
 
 # NO TESTS
