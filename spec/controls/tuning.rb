@@ -1,5 +1,5 @@
 # Task file for tests
-ref_file = 'tasks/tuning.yaml'
+ref_file = 'tasks/tuning.yml'
 
 control 'tuning-01' do
   title 'Ensure the system will restart if the kernel panics'

@@ -1,5 +1,5 @@
 # Task file for tests
-ref_file = 'tasks/admin.yaml'
+ref_file = 'tasks/admin.yml'
 
 control 'admin-01' do
   title 'Ensure admin group exists'

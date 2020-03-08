@@ -1,5 +1,5 @@
 # Task file for tests
-ref_file = 'tasks/utils.yaml'
+ref_file = 'tasks/utils.yml'
 
 control 'utils-01' do
   title 'Ensure utility packages are installed'

@@ -1,5 +1,5 @@
 # Task file for tests
-ref_file = 'tasks/dns.yaml'
+ref_file = 'tasks/dns.yml'
 
 control 'dns-01' do
   title 'Ensure NetworkManager is not managing DNS resolution'

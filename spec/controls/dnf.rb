@@ -1,5 +1,5 @@
 # Task file for tests
-ref_file = 'tasks/dnf.yaml'
+ref_file = 'tasks/dnf.yml'
 
 control 'dnf-01' do
   title 'Set number of DNF download workers'

@@ -1,5 +1,5 @@
 # Task file for tests
-ref_file = 'tasks/prerequisites.yaml'
+ref_file = 'tasks/prerequisites.yml'
 
 control 'prerequisites-01' do
   title 'Ensure prerequisite packages are installed'

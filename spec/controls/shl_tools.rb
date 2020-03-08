@@ -1,5 +1,5 @@
 # Task file for tests
-ref_file = 'tasks/shl-tools.yaml'
+ref_file = 'tasks/shl-tools.yml'
 
 control 'shl-tools-01' do
   title 'Ensure SHL script library is installed'

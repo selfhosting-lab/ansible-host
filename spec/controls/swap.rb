@@ -1,5 +1,5 @@
 # Task file for tests
-ref_file = 'tasks/swap.yaml'
+ref_file = 'tasks/swap.yml'
 
 control 'swap-01' do
   title 'Ensure swapfile exists and has appropriate permissions'

@@ -1,5 +1,5 @@
 # Task file for tests
-ref_file = 'tasks/time.yaml'
+ref_file = 'tasks/time.yml'
 
 control 'time-01' do
   title 'Ensure a timezone is set'
