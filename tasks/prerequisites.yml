@@ -4,5 +4,6 @@
   dnf:
     state: present
     name:
+    - file
     - kernel
     - python3-libselinux

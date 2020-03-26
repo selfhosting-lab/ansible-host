@@ -29,6 +29,17 @@ bundle exec kitchen verify vagrant
 bundle exec kitchen login vagrant
 ```
 
+Alternatively, you can do the same using Docker instead:
+```shell
+bundle install
+bundle exec kitchen converge docker
+bundle exec kitchen verify docker
+bundle exec kitchen login docker
+```
+
+> **Caveat for Docker users:**
+> The Docker environment is designed to *simulate* a virtual machine but does not have quite the same functionality. Certain features are not enabled when running in Docker.
+
 ---
 
 ## Features

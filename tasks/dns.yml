@@ -17,3 +17,4 @@
     seuser: system_u
     serole: object_r
     setype: net_conf_t
+  when: ansible_virtualization_type != 'docker'

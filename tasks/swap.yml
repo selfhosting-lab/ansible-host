@@ -23,13 +23,14 @@
 
 - name: 'swap : Ensure swapfile is formatted correctly'
   command: "mkswap {{ swapfile_path }}"
-  when: '"swap file" not in swapfile_info.stdout'
+  when: "'swap file' not in swapfile_info.stdout"
 
 - name: 'swap : Ensure swapfile is in fstab'
   lineinfile:
     path: /etc/fstab
     regexp: "^{{ swapfile_path }}"
     line: "{{ swapfile_path }} none swap sw 0 0"
+  when: ansible_virtualization_type != 'docker'
 
 - name: 'swap : Check system swap'
   command: swapon -s
@@ -38,4 +39,6 @@
 
 - name: 'swap : Ensure swapfile is enabled'
   command: swapon {{ swapfile_path }}
-  when: 'swapfile_path not in swapfile_sys.stdout'
+  when:
+  - swapfile_path not in swapfile_sys.stdout
+  - ansible_virtualization_type != 'docker'

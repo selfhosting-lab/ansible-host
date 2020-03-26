@@ -11,7 +11,9 @@ control 'swap-01' do
     its('owner') { should eq 'root' }
     its('group') { should eq 'root' }
     its('mode') { should cmp '0600' }
-    its('selinux_label') { should eq 'system_u:object_r:swapfile_t:s0' }
+    unless virtualization.system == 'docker'
+      its('selinux_label') { should eq 'system_u:object_r:swapfile_t:s0' }
+    end
   end
 end
 
@@ -30,6 +32,7 @@ control 'swap-03' do
   ref 'roles/system/tasks/swap.yaml'
   impact 'medium'
   only_if('Swap is not being managed') { file('/var/cache/swap').exist? }
+  only_if('Running in a Docker container') { virtualization.system != 'docker' }
   describe(etc_fstab.where { device_name == '/var/cache/swap' }) do
     its('file_system_type') { should cmp 'swap' }
   end
@@ -40,6 +43,7 @@ control 'swap-04' do
   impact 'medium'
   ref ref_file
   only_if('Swap is not being managed') { file('/var/cache/swap').exist? }
+  only_if('Running in a Docker container') { virtualization.system != 'docker' }
   describe command('swapon -s') do
     its('stdout') { should match '/var/cache/swap' }
   end

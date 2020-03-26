@@ -5,6 +5,7 @@ control 'tuning-01' do
   title 'Ensure the system will restart if the kernel panics'
   impact 'high'
   ref ref_file
+  only_if('Running in a Docker container') { virtualization.system != 'docker' }
   describe kernel_parameter('kernel.panic') do
     its('value') { should eq 10 }
   end

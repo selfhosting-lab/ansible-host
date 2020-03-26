@@ -43,11 +43,13 @@ control 'dnf-04' do
   impact 'high'
   ref ref_file
   describe file('/etc/dnf/automatic.conf') do
+    unless virtualization.system == 'docker'
+      its('selinux_label') { should eq 'system_u:object_r:etc_t:s0' }
+    end
     it { should exist }
     its('owner') { should eq 'root' }
     its('group') { should eq 'root' }
     its('mode') { should cmp '0644' }
-    its('selinux_label') { should eq 'system_u:object_r:etc_t:s0' }
     its('content') { should match 'download_updates = yes' }
     its('content') { should match 'apply_updates = yes' }
   end

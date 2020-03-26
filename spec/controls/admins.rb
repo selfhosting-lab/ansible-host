@@ -19,6 +19,8 @@ control 'admin-02' do
     its('owner') { should eq 'root' }
     its('group') { should eq 'root' }
     its('mode') { should cmp '0440' }
-    its('selinux_label') { should eq 'system_u:object_r:etc_t:s0' }
+    unless virtualization.system == 'docker'
+      its('selinux_label') { should eq 'system_u:object_r:etc_t:s0' }
+    end
   end
 end

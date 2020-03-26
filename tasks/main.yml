@@ -11,11 +11,13 @@
 
 - name: dns
   include: dns.yml
-  when: enable_custom_dns
+  when: 
+  - enable_custom_dns
 
 - name: swap file
   include: swap.yml
-  when: enable_swap
+  when:
+  - enable_swap
 
 - name: time
   include: time.yml

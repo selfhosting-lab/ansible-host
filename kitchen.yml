@@ -1,4 +1,6 @@
 ---
+<% fedora_version = '30' %>
+
 
 provisioner:
   name: ansible_push
@@ -26,11 +28,30 @@ platforms:
 - name: vagrant
   driver:
     name: vagrant
-    box: fedora/30-cloud-base
+    box: fedora/<%= fedora_version %>-cloud-base
     customize:
       memory: 2048
     network:
     - ['private_network', {ip: '192.168.33.10'}]
+<% end %>
+
+<% unless `which docker`.empty? %>
+  # Local development platform, using Docker
+- name: docker
+  driver:
+    name: docker
+    image: fedora:<%= fedora_version %>
+    platform: fedora
+    require_chef_omnibus: false
+    use_internal_docker_network: true
+    provision_command:
+    - systemctl enable sshd
+    run_command: /usr/lib/systemd/systemd
+    run_options:
+      tmpfs:
+      - /run
+      - /tmp
+      volume: /sys/fs/cgroup:/sys/fs/cgroup:ro
 <% end %>
 
 <% if ENV['DIGITALOCEAN_ACCESS_TOKEN'] %>
@@ -39,7 +60,7 @@ platforms:
   driver:
     name: digitalocean
     server_name: <%= ENV['BUILD_NAME'] || "ansible-host-" + Time.now.strftime("%Y%m%d-%H%M%S") + ".kitchen" %>
-    image: fedora-30-x64
+    image: fedora-<%= fedora_version %>-x64
     region: <%= ENV['DIGITALOCEAN_REGION'] || 'lon1' %>
     size: s-1vcpu-2gb
     tags:

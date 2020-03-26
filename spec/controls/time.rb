@@ -23,6 +23,7 @@ control 'time-03' do
   title 'Ensure chronyd uses socket instead of IP'
   impact 'medium'
   ref ref_file
+  only_if('Running in a Docker container') { virtualization.system != 'docker' }
   describe file('/etc/chrony.conf') do
     its('content') { should match(/^cmdport 0/) }
   end
@@ -48,6 +49,7 @@ control 'time-05' do
   title 'Ensure time synchronisation is running'
   impact 'medium'
   ref ref_file
+  only_if('Running in a Docker container') { virtualization.system != 'docker' }
   describe systemd_service('chronyd') do
     it { should be_installed }
     it { should be_enabled }
@@ -67,14 +69,17 @@ control 'time-06' do
       it { should be_reachable }
     end
   end
-  describe command('chronyc activity') do
-    its('stdout') { should match(/^[1-9]\d* sources online/) }
+  unless virtualization.system == 'docker'
+    describe command('chronyc activity') do
+      its('stdout') { should match(/^[1-9]\d* sources online/) }
+    end
   end
 end
 
 control 'time-07' do
   title 'Ensure time is synchronised within 5 seconds'
   impact 'low'
+  only_if('Running in a Docker container') { virtualization.system != 'docker' }
   describe command('chronyc tracking') do
     its('stdout') { should match(/^System time *: -?[0-4](\.\d+)?/) }
   end

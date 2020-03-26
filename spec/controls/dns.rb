@@ -20,8 +20,10 @@ control 'dns-02' do
     its('owner') { should eq 'root' }
     its('group') { should eq 'root' }
     its('mode') { should cmp '0644' }
-    its('selinux_label') { should eq 'system_u:object_r:net_conf_t:s0' }
     its('content') { should match(/^nameserver +\S+/) }
+    unless virtualization.system == 'docker'
+      its('selinux_label') { should eq 'system_u:object_r:net_conf_t:s0' }
+    end
   end
 end
 

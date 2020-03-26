@@ -5,6 +5,8 @@
     name: kernel.panic
     value: '10'
     state: present
+  when:
+  - ansible_virtualization_type != 'docker'
 
 - name: 'tuning : Ensure the tuned packages are installed'
   dnf:
